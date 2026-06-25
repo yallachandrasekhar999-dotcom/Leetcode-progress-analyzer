@@ -159,8 +159,16 @@ export default function DashboardPage() {
       // so clicking any year in the dropdown is instant
       prefetchCalendarYears(username, res?.active_years ?? []);
     } catch (e) {
-      setErr("Failed to fetch profile. Is the backend running?");
-    } finally {
+  console.error("Profile Error:", e);
+  console.error("Response:", e.response);
+  console.error("Data:", e.response?.data);
+
+  setErr(
+    e.response?.data?.detail ||
+    e.message ||
+    "Failed to fetch profile."
+  );
+}finally {
       setFetching(false);
     }
   };
