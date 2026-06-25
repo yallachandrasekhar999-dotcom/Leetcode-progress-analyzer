@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   RESPONSIVE CSS CUSTOM PROPERTIES & BASE
+   Breakpoints: 320 | 480 | 768 | 1024 | 1440
+   ============================================================ */
+
+@layer base {
+  :root {
+    --bg-primary: #FFF8F0;
+    --bg-secondary: #F7EFE5;
+    --bg-card: #FFFFFF;
+    --text-primary: #2B2D42;
+    --text-secondary: #4D5061;
+    --text-muted: #6C757D;
+    --border: #E8E2D9;
+    --brand: #FF6B35;
+
+    /* Responsive sidebar width */
+    --sidebar-w: 256px;
+    --sidebar-collapsed-w: 72px;
+
+    /* Responsive spacing */
+    --page-px: clamp(1rem, 4vw, 1.5rem);
+    --page-py: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .dark {
+    --bg-primary: #181925;
+    --bg-secondary: #212330;
+    --bg-card: #1E202B;
+    --text-primary: #FFF8F0;
+    --text-secondary: #C8CAD3;
+    --text-muted: #9AA0A6;
+    --border: #2F3244;
+    --brand: #FF6B35;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    /* Responsive base font: 14px on mobile, 16px on desktop */
+    font-size: clamp(14px, 2vw, 16px);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Ensure all images are responsive by default */
+  img, svg { max-width: 100%; height: auto; }
+
+  /* Smooth box-sizing */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-brand-700 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-brand-600; }
+
+  /* Focus visible for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid #FF6B35;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* ── Cards ─────────────────────────────────────────────── */
+  .card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    /* Responsive padding: 1rem on mobile → 1.75rem on desktop */
+    @apply rounded-2xl shadow-card transition-all duration-300;
+    padding: clamp(1rem, 3vw, 1.75rem);
+  }
+  .card:hover { @apply shadow-glow-sm -translate-y-0.5; }
+
+  .stat-card {
+    @apply card relative overflow-hidden;
+  }
+  .stat-card::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-[2px] bg-gradient-brand;
+  }
+
+  /* ── Buttons — minimum 44×44px touch targets ────────────── */
+  .btn-primary {
+    @apply bg-brand-600 hover:bg-brand-700 text-white font-semibold
+           rounded-xl transition-all duration-200 flex items-center justify-center gap-2
+           shadow-glow-sm hover:shadow-glow active:scale-95;
+    padding: clamp(0.625rem, 1.5vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+    min-height: 44px;
+    min-width: 44px;
+    font-size: clamp(0.8rem, 1.5vw, 0.9375rem);
+  }
+  .btn-secondary {
+    @apply border border-brand-500 text-brand-400 hover:bg-brand-600 hover:text-white
+           font-semibold rounded-xl transition-all duration-200
+           flex items-center justify-center gap-2 active:scale-95;
+    padding: clamp(0.625rem, 1.5vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+    min-height: 44px;
+    min-width: 44px;
+    font-size: clamp(0.8rem, 1.5vw, 0.9375rem);
+  }
+  .btn-ghost {
+    @apply text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]
+           font-medium rounded-xl transition-all duration-200 flex items-center gap-2;
+    padding: clamp(0.5rem, 1vw, 0.5rem) clamp(0.75rem, 2vw, 1rem);
+    min-height: 44px;
+    min-width: 44px;
+    font-size: clamp(0.8rem, 1.5vw, 0.9375rem);
+  }
+
+  /* ── Inputs ─────────────────────────────────────────────── */
+  .input-field {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    @apply rounded-xl w-full outline-none transition-all duration-200
+           placeholder:text-[var(--text-muted)];
+    padding: clamp(0.625rem, 1.5vw, 0.75rem) clamp(0.875rem, 2vw, 1rem);
+    min-height: 44px;
+    font-size: clamp(0.8rem, 1.5vw, 0.9375rem);
+  }
+  .input-field:focus {
+    @apply border-brand-500 ring-2 ring-brand-500/20;
+  }
+
+  /* ── Badges ─────────────────────────────────────────────── */
+  .badge-easy   { @apply bg-easy/10 text-easy border border-easy/30 text-xs font-bold px-2 py-0.5 rounded-full; }
+  .badge-medium { @apply bg-medium/10 text-medium border border-medium/30 text-xs font-bold px-2 py-0.5 rounded-full; }
+  .badge-hard   { @apply bg-hard/10 text-hard border border-hard/30 text-xs font-bold px-2 py-0.5 rounded-full; }
+
+  /* ── Skeleton shimmer ───────────────────────────────────── */
+  .skeleton {
+    @apply animate-shimmer rounded-xl;
+    background: linear-gradient(90deg,
+      var(--bg-secondary) 25%,
+      var(--border) 50%,
+      var(--bg-secondary) 75%
+    );
+    background-size: 200% 100%;
+  }
+
+  /* ── Section headings — responsive via clamp ────────────── */
+  .section-title {
+    font-size: clamp(1.25rem, 3vw, 1.875rem);
+    @apply font-bold tracking-tight;
+    color: var(--text-primary);
+  }
+  .section-subtitle {
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    @apply mt-1.5;
+    color: var(--text-muted);
+  }
+
+  /* ── Pill tabs ──────────────────────────────────────────── */
+  .tab-pill {
+    @apply rounded-full font-medium transition-all duration-200 cursor-pointer;
+    padding: clamp(0.375rem, 1vw, 0.5rem) clamp(0.75rem, 2vw, 1rem);
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+    min-height: 36px;
+    color: var(--text-secondary);
+  }
+  .tab-pill.active {
+    @apply bg-brand-600 text-white shadow-glow-sm;
+  }
+  .tab-pill:not(.active):hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  /* ── Sidebar nav item ───────────────────────────────────── */
+  .nav-item {
+    @apply flex items-center gap-3 rounded-xl text-sm font-medium
+           transition-all duration-200 cursor-pointer w-full;
+    padding: clamp(0.625rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+    min-height: 44px;
+    color: var(--text-secondary);
+  }
+  .nav-item:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+  .nav-item.active {
+    @apply bg-brand-600/20 text-brand-400 border border-brand-500/30;
+  }
+
+  /* ── Heatmap cell ───────────────────────────────────────── */
+  .heat-cell {
+    @apply rounded-sm cursor-pointer transition-transform hover:scale-125;
+  }
+
+  /* ── Progress bar ───────────────────────────────────────── */
+  .progress-bar {
+    @apply h-2 rounded-full overflow-hidden;
+    background-color: var(--border);
+  }
+  .progress-fill {
+    @apply h-full rounded-full bg-gradient-brand transition-all duration-700;
+  }
+
+  /* ── Company tag ────────────────────────────────────────── */
+  .company-tag {
+    @apply text-xs font-medium px-2.5 py-1 rounded-full border transition-all
+           duration-200 cursor-pointer;
+    min-height: 28px;
+  }
+
+  /* ── Glow text ──────────────────────────────────────────── */
+  .text-glow {
+    text-shadow: 0 0 30px rgba(99, 113, 246, 0.6);
+  }
+
+  /* ── Mobile drawer overlay ──────────────────────────────── */
+  .mobile-overlay {
+    @apply fixed inset-0 z-30 bg-black/50 backdrop-blur-sm;
+    animation: fadeIn 0.2s ease;
+  }
+
+  /* ── Responsive tables — horizontal scroll on mobile ────── */
+  .table-responsive {
+    @apply w-full overflow-x-auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-responsive table {
+    @apply min-w-full;
+  }
+
+  /* ── Mobile-full-width buttons ──────────────────────────── */
+  @media (max-width: 480px) {
+    .btn-mobile-full { @apply w-full justify-center; }
+  }
+}
+
+@layer utilities {
+  .bg-surface { background-color: var(--bg-primary); }
+  .bg-card    { background-color: var(--bg-card); }
+  .text-primary   { color: var(--text-primary); }
+  .text-secondary { color: var(--text-secondary); }
+  .text-muted     { color: var(--text-muted); }
+  .border-surface { border-color: var(--border); }
+
+  /* Responsive gap helpers */
+  .gap-responsive { gap: clamp(0.75rem, 2vw, 1.5rem); }
+
+  /* Safe area padding for notched phones */
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
+}
+
+/* ── Keyframe animations ────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Hide third-party Video Speed Controller overlays */
+.vsc-controller {
+  display: none !important;
+}
+
+/* ============================================================
+   RESPONSIVE OVERRIDES
+   Mobile-first: base styles → progressively enhanced
+   ============================================================ */
+
+/* 320px – tiny phones */
+@media (max-width: 320px) {
+  .card { padding: 0.875rem; }
+  .section-title { font-size: 1.1rem; }
+}
+
+/* 480px – large phones */
+@media (max-width: 480px) {
+  /* Stack stat grids to 2-col or 1-col */
+  .stats-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .stats-grid-3 { grid-template-columns: 1fr !important; }
+
+  /* Full-width forms */
+  .search-form { flex-direction: column; }
+  .search-form .input-field { width: 100%; }
+  .search-form .btn-primary { width: 100%; }
+}
+
+/* 768px – tablets */
+@media (max-width: 768px) {
+  /* Heatmap: allow horizontal scroll */
+  .heatmap-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+  }
+}
